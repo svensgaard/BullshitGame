@@ -24,7 +24,7 @@ public class BluetoothController {
     }
 
     public Intent checkBluetoothEnable() {
-        //Check if bluetooth is enabled
+        //Check if bluetooth is enabled if not request that it is.
         if (!mBluetoothAdapter.isEnabled()) {
             return new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
         } else {

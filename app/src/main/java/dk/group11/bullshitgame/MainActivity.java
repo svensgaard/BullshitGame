@@ -8,7 +8,7 @@ import android.view.View;
 
 import Bluetooth.BluetoothController;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     BluetoothController bluetoothController = new BluetoothController(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
