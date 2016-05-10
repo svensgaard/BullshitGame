@@ -2,6 +2,7 @@ package dk.group11.bullshitgame;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.res.ResourcesCompat;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -32,6 +34,12 @@ public class GameActivity extends AppCompatActivity {
     Spinner spinner_guess_dice;
     Random rand;
 
+    int player_score;
+    int opponent_score;
+
+    int player_remaining_dice;
+    int opponent_remaining_dice;
+
     int remaining_dice;
 
     private ShakeDetector mShakeDetector;
@@ -45,22 +53,12 @@ public class GameActivity extends AppCompatActivity {
 
         mShakeDetector = new ShakeDetector(GameActivity.this);
 
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
 
             public void onShake(int count) {
-                die_1.setBackground(dice_drawables.get(rand.nextInt(6)));
-                die_2.setBackground(dice_drawables.get(rand.nextInt(6)));
-                die_3.setBackground(dice_drawables.get(rand.nextInt(6)));
-                die_4.setBackground(dice_drawables.get(rand.nextInt(6)));
-                die_5.setBackground(dice_drawables.get(rand.nextInt(6)));
-                die_6.setBackground(dice_drawables.get(rand.nextInt(6)));
-
-                opp_die_1.setBackground(dice_drawables.get(rand.nextInt(6)));
-                opp_die_2.setBackground(dice_drawables.get(rand.nextInt(6)));
-                opp_die_3.setBackground(dice_drawables.get(rand.nextInt(6)));
-                opp_die_4.setBackground(dice_drawables.get(rand.nextInt(6)));
-                opp_die_5.setBackground(dice_drawables.get(rand.nextInt(6)));
-                opp_die_6.setBackground(dice_drawables.get(rand.nextInt(6)));
+                roll();
                 mShakeDetector.disable();
             }
         });
@@ -80,6 +78,9 @@ public class GameActivity extends AppCompatActivity {
         mPlayer_score.setText("0");
         mGuess.setText("");
 
+        player_score = 0;
+        opponent_score = 0;
+
         die_1 = (ImageView) findViewById(R.id.die_place_1);
         die_2 = (ImageView) findViewById(R.id.die_place_2);
         die_3 = (ImageView) findViewById(R.id.die_place_3);
@@ -94,19 +95,19 @@ public class GameActivity extends AppCompatActivity {
         opp_die_5 = (ImageView) findViewById(R.id.imageView_opponent_die_place_5);
         opp_die_6 = (ImageView) findViewById(R.id.imageView_opponent_die_place_6);
 
-        animation1 = (AnimationDrawable) die_1.getBackground();
-        animation2 = (AnimationDrawable) die_2.getBackground();
-        animation3 = (AnimationDrawable) die_3.getBackground();
-        animation4 = (AnimationDrawable) die_4.getBackground();
-        animation5 = (AnimationDrawable) die_5.getBackground();
-        animation6 = (AnimationDrawable) die_6.getBackground();
-
-        opp_animation1 = (AnimationDrawable) opp_die_1.getBackground();
-        opp_animation2 = (AnimationDrawable) opp_die_2.getBackground();
-        opp_animation3 = (AnimationDrawable) opp_die_3.getBackground();
-        opp_animation4 = (AnimationDrawable) opp_die_4.getBackground();
-        opp_animation5 = (AnimationDrawable) opp_die_5.getBackground();
-        opp_animation6 = (AnimationDrawable) opp_die_6.getBackground();
+//        animation1 = (AnimationDrawable) die_1.getBackground();
+//        animation2 = (AnimationDrawable) die_2.getBackground();
+//        animation3 = (AnimationDrawable) die_3.getBackground();
+//        animation4 = (AnimationDrawable) die_4.getBackground();
+//        animation5 = (AnimationDrawable) die_5.getBackground();
+//        animation6 = (AnimationDrawable) die_6.getBackground();
+//
+//        opp_animation1 = (AnimationDrawable) opp_die_1.getBackground();
+//        opp_animation2 = (AnimationDrawable) opp_die_2.getBackground();
+//        opp_animation3 = (AnimationDrawable) opp_die_3.getBackground();
+//        opp_animation4 = (AnimationDrawable) opp_die_4.getBackground();
+//        opp_animation5 = (AnimationDrawable) opp_die_5.getBackground();
+//        opp_animation6 = (AnimationDrawable) opp_die_6.getBackground();
 
         dice_drawables = new ArrayList<>();
         dice_drawables.add(ResourcesCompat.getDrawable(getResources(), R.drawable.die1, null));
@@ -134,6 +135,8 @@ public class GameActivity extends AppCompatActivity {
         opponentDices.add(opp_die_6);
 
         remaining_dice = playerDices.size() + opponentDices.size();
+        player_remaining_dice = playerDices.size();
+        opponent_remaining_dice = opponentDices.size();
         mRemaining_dice.setText(String.valueOf(remaining_dice));
 
         // HIDE OPPONENT DICE
@@ -145,6 +148,7 @@ public class GameActivity extends AppCompatActivity {
 
     public void newRound() {
         mButton_Bullshit.setEnabled(false);
+        mButton_Guess.setEnabled(false);
         mGuess.setText("");
         hideOpponentDice();
         new AlertDialog.Builder(this)
@@ -153,6 +157,33 @@ public class GameActivity extends AppCompatActivity {
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         mShakeDetector.enable();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
+    public void roll() {
+        for (ImageView d : playerDices) {
+            if (d.getVisibility() != View.GONE) {
+                d.setBackground(dice_drawables.get(rand.nextInt(6)));
+            }
+        }
+
+        for (ImageView d : opponentDices) {
+            if (d.getVisibility() != View.GONE) {
+                d.setBackground(dice_drawables.get(rand.nextInt(6)));
+            }
+        }
+
+        populateSpinner();
+
+        new AlertDialog.Builder(this)
+                .setMessage("Make a guess!")
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        mButton_Guess.setEnabled(true);
+                        populateSpinner();
                     }
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
@@ -174,26 +205,7 @@ public class GameActivity extends AppCompatActivity {
 //        opp_die_5.setBackground(dice_drawables.get(rand.nextInt(6)));
 //        opp_die_6.setBackground(dice_drawables.get(rand.nextInt(6)));
 
-        for (ImageView d : playerDices) {
-            d.setBackground(dice_drawables.get(rand.nextInt(6)));
-        }
-
-        for (ImageView d : opponentDices) {
-            d.setBackground(dice_drawables.get(rand.nextInt(6)));
-        }
-
-        populateSpinner();
-
-        new AlertDialog.Builder(this)
-                .setTitle("Guessing")
-                .setMessage("Make a guess!")
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        populateSpinner();
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
+        roll();
     }
 
     private void populateSpinner() {
@@ -223,23 +235,13 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void showOpponentDice() {
-        opp_die_1.setVisibility(View.VISIBLE);
-        opp_die_2.setVisibility(View.VISIBLE);
-        opp_die_3.setVisibility(View.VISIBLE);
-        opp_die_4.setVisibility(View.VISIBLE);
-        opp_die_5.setVisibility(View.VISIBLE);
-        opp_die_6.setVisibility(View.VISIBLE);
-
+        LinearLayout l = (LinearLayout) findViewById(R.id.opponent_dice_holder);
+        l.setVisibility(View.VISIBLE);
     }
 
     public void hideOpponentDice() {
-        opp_die_1.setVisibility(View.GONE);
-        opp_die_2.setVisibility(View.GONE);
-        opp_die_3.setVisibility(View.GONE);
-        opp_die_4.setVisibility(View.GONE);
-        opp_die_5.setVisibility(View.GONE);
-        opp_die_6.setVisibility(View.GONE);
-
+        LinearLayout l = (LinearLayout) findViewById(R.id.opponent_dice_holder);
+        l.setVisibility(View.GONE);
     }
 
     public void quitHandler(View view) {
@@ -272,7 +274,13 @@ public class GameActivity extends AppCompatActivity {
                     .setMessage("You won!")
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
+                            player_score++;
+                            mPlayer_score.setText(String.valueOf(player_score));
                             newRound();
+                            player_remaining_dice--;
+                            remaining_dice--;
+                            playerDices.get(player_remaining_dice-1).setVisibility(View.GONE);
+                            mRemaining_dice.setText(String.valueOf(remaining_dice));
                         }
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
@@ -284,11 +292,17 @@ public class GameActivity extends AppCompatActivity {
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             newRound();
+                            remaining_dice--;
+                            opponent_remaining_dice--;
+                            opponentDices.get(opponent_remaining_dice-1).setVisibility(View.GONE);
+                            mOpponent_score.setText(String.valueOf(opponent_score++));
+                            mRemaining_dice.setText(String.valueOf(remaining_dice));
                         }
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
         }
+
 
     }
 
