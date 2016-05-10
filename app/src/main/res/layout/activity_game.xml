@@ -219,50 +219,45 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:id="@+id/opponent_dice_holder"
             android:layout_weight="1">
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/imageView_opponent_die_place_1"
-                android:background="@drawable/roll_animation"
                 android:layout_weight="1"/>
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/imageView_opponent_die_place_2"
-                android:background="@drawable/roll_animation"
                 android:layout_weight="1"/>
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/imageView_opponent_die_place_3"
-                android:layout_weight="1"
-                android:background="@drawable/roll_animation"/>
+                android:layout_weight="1"/>
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/imageView_opponent_die_place_4"
                 android:layout_weight="1"
-                android:background="@drawable/roll_animation"
                 android:visibility="visible"/>
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/imageView_opponent_die_place_5"
-                android:background="@drawable/roll_animation"
                 android:layout_weight="1"
                 android:visibility="visible"/>
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/imageView_opponent_die_place_6"
-                android:background="@drawable/roll_animation"
                 android:layout_weight="1"
                 android:visibility="visible"/>
         </LinearLayout>
@@ -281,45 +276,45 @@
             android:layout_weight="1">
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/die_place_2"
                 android:background="@drawable/roll_animation"
                 android:layout_weight="1"/>
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/die_place_5"
                 android:background="@drawable/roll_animation"
                 android:layout_weight="1"/>
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/die_place_4"
                 android:background="@drawable/roll_animation"
                 android:layout_weight="1"/>
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/die_place_6"
                 android:layout_weight="1"
                 android:background="@drawable/roll_animation"
                 android:visibility="visible"/>
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/die_place_1"
                 android:background="@drawable/roll_animation"
                 android:layout_weight="1"
                 android:visibility="visible"/>
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/die_place_3"
                 android:background="@drawable/roll_animation"
                 android:layout_weight="1"
