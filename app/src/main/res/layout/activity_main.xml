@@ -9,42 +9,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="dk.group11.bullshitgame.MainActivity">
 
-    <fragment android:name="dk.group11.bullshitgame.Fragments.FindGame"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <fragment android:name="dk.group11.bullshitgame.Fragments.HostGame"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="visible"
-            android:text="Resume"
-            android:id="@+id/button_resume"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"/>
-
-        <Button
-            android:visibility="visible"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Quit"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
-            android:id="@+id/button_quit"
-            android:layout_below="@+id/button_resume"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"/>
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -52,15 +16,12 @@
         android:layout_centerInParent="true"
         android:orientation="vertical">
 
-        <!-- Invisible unless a game is on -->
-
-        <!-- Invisible unless a game is on -->
-
         <Button
             android:id="@+id/findGameBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/findGame"
+            android:onClick="onClick"
 
             />
         <Button

@@ -13,12 +13,12 @@ import dk.group11.bullshitgame.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link GameFragment.OnFragmentInteractionListener} interface
+ * {@link Game.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link GameFragment#newInstance} factory method to
+ * Use the {@link Game#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class GameFragment extends Fragment {
+public class Game extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -30,7 +30,7 @@ public class GameFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public GameFragment() {
+    public Game() {
         // Required empty public constructor
     }
 
@@ -40,11 +40,11 @@ public class GameFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment GameFragment.
+     * @return A new instance of fragment Game.
      */
     // TODO: Rename and change types and number of parameters
-    public static GameFragment newInstance(String param1, String param2) {
-        GameFragment fragment = new GameFragment();
+    public static Game newInstance(String param1, String param2) {
+        Game fragment = new Game();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

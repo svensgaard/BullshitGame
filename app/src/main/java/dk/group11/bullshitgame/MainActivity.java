@@ -18,8 +18,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if(bluetoothController.startBluetooth()) {
             int REQUEST_ENABLE_BT = 1;
-            startActivityForResult(bluetoothController.checkBluetoothEnable(), REQUEST_ENABLE_BT);
-
+            Intent bluetooth_intent = bluetoothController.checkBluetoothEnable();
+            if (bluetooth_intent != null) {
+                startActivityForResult(bluetooth_intent, REQUEST_ENABLE_BT);
+            }
         }
 
 
@@ -30,7 +32,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(v.getId() == R.id.hostGameBtn) {
             //TODO start hosting a game
         } else if(v.getId() == R.id.findGameBtn) {
-            //TODO search for a game
+            Intent intent = new Intent(this, GameActivity.class);
+            startActivity(intent);
         } else if(v.getId() == R.id.settingsBtn) {
             //TODO start settings
         } else if(v.getId() == R.id.closeBtn) {
