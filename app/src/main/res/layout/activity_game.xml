@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="YOUR TURN"
-            android:id="@+id/textView"
+            android:id="@+id/textView_turn_label"
             android:layout_gravity="center_vertical"
             android:gravity="center"/>
 

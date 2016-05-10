@@ -56,15 +56,9 @@ public class BluetoothClient {
         }
     }
 
-    public void connect() throws IOException {
+    public void connect(String MACAddress) throws IOException {
         Log.d("Info", "Trying to connect");
-        findDevice();
-        //Obtain socket from mac address
-        while(MACAddress == null) {
-            //This is to block until a mac address has been found
-        }
         Log.d("Info","MAC" + MACAddress);
-
         try {
             btsocket = bluetoothAdapter.getRemoteDevice(MACAddress).createInsecureRfcommSocketToServiceRecord(ServerThread.RFCOMM_UUID);
         } catch (IOException e) {

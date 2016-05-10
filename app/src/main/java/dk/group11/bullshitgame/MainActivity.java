@@ -30,9 +30,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //OnClick listener for all buttons
     public void onClick(View v) {
         if(v.getId() == R.id.hostGameBtn) {
-            //TODO start hosting a game
+            Intent intent = new Intent(this, GameActivity.class);
+            intent.putExtra(GameActivity.EXTRA_CONNECTION_TYPE, "server");
+            startActivity(intent);
         } else if(v.getId() == R.id.findGameBtn) {
             Intent intent = new Intent(this, GameActivity.class);
+            intent.putExtra(GameActivity.EXTRA_CONNECTION_TYPE, "client");
             startActivity(intent);
         } else if(v.getId() == R.id.settingsBtn) {
             //TODO start settings

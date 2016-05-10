@@ -2,6 +2,7 @@ package Bluetooth;
 
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
+import android.content.Intent;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -60,10 +61,9 @@ public class ClientThread extends Thread {
                 line = bufferedreader.readLine(); //blocking until a whole line has been read.
 
                 // broadcast the received data
-                // Intent i = new Intent(BT_NEW_DATA_INTENT);
-                //   i.putExtra(BT_NEW_DATA_INTENT_EXTRA_BT_DATA, line);
-                //     i.putExtra(BT_NEW_DATA_INTENT_EXTRA_BT_DATA_STREAM_ID, stream_id); //used by broadcast receiver to distinguish which device data came from
-                //       context.sendBroadcast(i);
+                Intent i = new Intent(BluetoothController.BT_SEND_DATA_INTENT);
+                i.putExtra(BluetoothController.BT_SEND_DATA_INTENT_EXTRA_DATA, line);
+                context.sendBroadcast(i);
 
             } catch (IOException e) {
                 return;

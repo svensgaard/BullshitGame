@@ -18,6 +18,9 @@ public class BluetoothController {
     BluetoothServer btServer;
     BluetoothClient btClient;
 
+    // EXTRA MESSAGES
+    public static final String EXTRA_ROLL = "roll,", EXTRA_GUESS = "guess,", EXTRA_BULLSHIT = "bullshit,";
+
     //Boolean for what type this application is when communicating.
     Boolean isServer;
 
@@ -46,15 +49,16 @@ public class BluetoothController {
             return null;
         }
     }
+
     public void startHostingServer() {
         btServer = new BluetoothServer(context,mBluetoothAdapter);
         btServer.RunServer();
         isServer = true;
     }
-    public boolean connectToServer() throws IOException {
+    public boolean connectToServer(String MACaddress) throws IOException {
         btClient = new BluetoothClient(context, mBluetoothAdapter);
         try {
-            btClient.connect();
+            btClient.connect(MACaddress);
             isServer = false;
             return true;
         } catch (IOException e) {
