@@ -318,7 +318,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void bullShitHandler(View view) {
-        showOpponentDice();
+
 
         sendMessage(Constants.SEND_BULLSHIT);
 
@@ -352,6 +352,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void checkBullshit() {
+        showOpponentDice();
         int amount_of_guessed_dice = 0;
 
         // COUNTS AMOUNT OF GUESSED DIE
@@ -371,7 +372,7 @@ public class GameActivity extends AppCompatActivity {
 
         if (currentGuessAmount < amount_of_guessed_dice) {
 
-            if (myTurn) {
+            if (!myTurn) {
                 new AlertDialog.Builder(this)
                         .setTitle("Round over")
                         .setMessage("You lost!")
@@ -414,7 +415,7 @@ public class GameActivity extends AppCompatActivity {
                         .show();
             }
         } else {
-            if (myTurn) {
+            if (!myTurn) {
                 new AlertDialog.Builder(this)
                         .setTitle("Round over")
                         .setMessage("You won!")
