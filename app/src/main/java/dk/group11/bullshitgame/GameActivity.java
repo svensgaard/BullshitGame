@@ -467,6 +467,7 @@ public class GameActivity extends AppCompatActivity {
                                 Log.d("SIZE DRAWABALES:", String.valueOf(dice_drawables.size()));
                             opponentDices.get(i).setBackground(dice_drawables.get(Integer.parseInt(String.valueOf(roll.charAt(i)))));
                             }
+                        populateSpinner();
                         dicesReceived = true;
 
                         if(myTurn) {
