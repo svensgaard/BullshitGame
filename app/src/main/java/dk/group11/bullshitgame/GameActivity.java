@@ -69,14 +69,7 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        IntentFilter filter = new IntentFilter(btController.EXTRA_ROLL);
-        this.registerReceiver(mReceiver, filter);
 
-        filter = new IntentFilter(btController.EXTRA_BULLSHIT);
-        this.registerReceiver(mReceiver, filter);
-
-        filter = new IntentFilter(btController.EXTRA_GUESS);
-        this.registerReceiver(mReceiver, filter);
 
         btController = new BluetoothController(this);
         mShakeDetector = new ShakeDetector(GameActivity.this);
@@ -489,7 +482,11 @@ public class GameActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
+
         mShakeDetector.register();
+        IntentFilter filter = new IntentFilter(btController.BT_SEND_DATA_INTENT);
+        this.registerReceiver(mReceiver, filter);
+
 
     }
 
