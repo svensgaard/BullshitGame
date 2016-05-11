@@ -380,7 +380,7 @@ public class GameActivity extends AppCompatActivity {
                                 endGame();
                             }
                             lost();
-                            sendMessage(Constants.SEND_BULLSHIT + 1);
+                            sendMessage(Constants.SEND_BULLSHIT + "1");
                         }
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
@@ -392,7 +392,7 @@ public class GameActivity extends AppCompatActivity {
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             won();
-                            sendMessage(Constants.SEND_BULLSHIT + 0);
+                            sendMessage(Constants.SEND_BULLSHIT + "0");
                         }
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
