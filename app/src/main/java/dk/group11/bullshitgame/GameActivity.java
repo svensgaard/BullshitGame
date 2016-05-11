@@ -318,10 +318,6 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void bullShitHandler(View view) {
-
-
-        sendMessage(Constants.SEND_BULLSHIT);
-
         checkBullshit();
     }
 
@@ -371,28 +367,26 @@ public class GameActivity extends AppCompatActivity {
         }
 
         if (currentGuessAmount < amount_of_guessed_dice) {
+            lost();
+            sendMessage(Constants.SEND_BULLSHIT + "1");
             new AlertDialog.Builder(this)
                     .setTitle("Round over")
                     .setMessage("You lost!")
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            if (playerDices.size() <= 0 || opponentDices.size() <= 0) {
-                                endGame();
-                            }
-                            lost();
-                            sendMessage(Constants.SEND_BULLSHIT + "1");
+
                         }
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
         } else {
+            won();
+            sendMessage(Constants.SEND_BULLSHIT + "0");
             new AlertDialog.Builder(this)
                     .setTitle("Round over")
                     .setMessage("You won!")
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            won();
-                            sendMessage(Constants.SEND_BULLSHIT + "0");
                         }
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
