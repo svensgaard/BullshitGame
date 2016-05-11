@@ -100,7 +100,7 @@ public class GameActivity extends AppCompatActivity {
         Intent i = getIntent();
 
         connectionType = i.getStringExtra(EXTRA_CONNECTION_TYPE);
-
+        myTurn = false;
         Log.d("ConnectionType: ", connectionType);
         btService.start();
         if (connectionType.equals("client")) {
@@ -237,13 +237,9 @@ public class GameActivity extends AppCompatActivity {
 
         shakeEnabled = false;
 
-        try {
-            btController.sendData(btController.EXTRA_ROLL + roll);
             mTurn_label.setText("WAITING...");
             disableButtons();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
     }
 
     private void disableButtons() {
@@ -410,8 +406,12 @@ public class GameActivity extends AppCompatActivity {
                 case Constants.MESSAGE_STATE_CHANGE:
                     switch (msg.arg1) {
                         case BluetoothService.STATE_CONNECTED:
+                            Log.d("BT_STATE", "CONNECTED");
                             intialize();
-                            newRound();
+                            if(!myTurn) {
+                                disableButtons();
+                                mShakeDetector.disable();
+                            }
                             break;
                         case BluetoothService.STATE_CONNECTING:
                             Log.d("BT_STATE", "connectiong");
