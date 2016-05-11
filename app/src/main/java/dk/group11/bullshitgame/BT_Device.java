@@ -162,4 +162,9 @@ public class BT_Device extends Activity {
         this.unregisterReceiver(mReceiver);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        this.unregisterReceiver(mReceiver);
+    }
 }

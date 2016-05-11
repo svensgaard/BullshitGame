@@ -417,7 +417,7 @@ public class GameActivity extends AppCompatActivity {
 
             if (BluetoothController.BT_SEND_DATA_INTENT.equals(action)) {
                 String data = intent.getStringExtra(BluetoothController.BT_SEND_DATA_INTENT_EXTRA_DATA);
-                Log.d("BROADCASTRECEIVER","RECEIVED BT_SEND_DATA_INTENT");
+
                 if (data.contains(btController.EXTRA_ROLL)) {
 
 
@@ -466,13 +466,11 @@ public class GameActivity extends AppCompatActivity {
                 }
 
                 if (data.contains(btController.EXTRA_BULLSHIT)) {
-
                     checkBullshit();
                     myTurn = true;
                 }
 
             } else if (btController.BT_CLIENT_CONNECTED.equals(action)) {
-                Log.d("BROADCASTRECEIVER","RECEIVED BT_CLIENT_CONNECTED");
                 myTurn = false;
                 intialize();
                 newRound();
