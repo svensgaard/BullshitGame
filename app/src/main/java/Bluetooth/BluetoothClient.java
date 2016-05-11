@@ -60,7 +60,7 @@ public class BluetoothClient {
         Log.d("Info", "Trying to connect");
         Log.d("Info","MAC" + MACAddress);
         try {
-            btsocket = bluetoothAdapter.getRemoteDevice(MACAddress).createInsecureRfcommSocketToServiceRecord(ServerThread.RFCOMM_UUID);
+            btsocket = bluetoothAdapter.getRemoteDevice(MACAddress).createInsecureRfcommSocketToServiceRecord(serverThread.RFCOMM_UUID);
         } catch (IOException e) {
             e.printStackTrace();
         }

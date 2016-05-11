@@ -10,7 +10,7 @@ import java.io.IOException;
  * Created by Mads on 30-03-2016.
  */
 public class BluetoothServer {
-    private ServerThread thread;
+    private serverThread thread;
 
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothSocket btsocket = null;
@@ -21,7 +21,7 @@ public class BluetoothServer {
         this.bluetoothAdapter = bluetoothAdapter;
         this.context = context;
 
-        thread = new ServerThread(context, bluetoothAdapter);
+        thread = new serverThread(context, bluetoothAdapter);
     }
 
 

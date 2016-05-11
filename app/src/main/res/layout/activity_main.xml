@@ -42,6 +42,7 @@
             android:layout_width="500dp"
             android:layout_height="100dp"
             android:text="@string/settings"
+            android:onClick="onClick"
 
             android:layout_weight="0"
             android:layout_margin="20dp"

@@ -81,7 +81,7 @@ public class GameActivity extends AppCompatActivity {
 
         btAdapter = BluetoothAdapter.getDefaultAdapter();
         btService = new BluetoothService(this, mHandler);
-        btController = new BluetoothController(this);
+
         mShakeDetector = new ShakeDetector(GameActivity.this);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -410,7 +410,8 @@ public class GameActivity extends AppCompatActivity {
                 case Constants.MESSAGE_STATE_CHANGE:
                     switch (msg.arg1) {
                         case BluetoothService.STATE_CONNECTED:
-                            Log.d("BT_STATE", "CONNECTED");
+                            intialize();
+                            newRound();
                             break;
                         case BluetoothService.STATE_CONNECTING:
                             Log.d("BT_STATE", "connectiong");

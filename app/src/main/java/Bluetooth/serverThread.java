@@ -19,7 +19,7 @@ import java.util.UUID;
 /**
  * Created by Mads on 30-03-2016.
  */
-public class ServerThread extends Thread{
+public class serverThread extends Thread{
     private Boolean runThread = true;
     private BluetoothAdapter adapter;
     private BluetoothSocket btsocket;
@@ -31,7 +31,7 @@ public class ServerThread extends Thread{
     OutputStream outputstream;
     InputStream inputstream;
 
-    public ServerThread(Context context, BluetoothAdapter adapter) {
+    public serverThread(Context context, BluetoothAdapter adapter) {
 
         this.adapter = adapter;
         this.context = context;
