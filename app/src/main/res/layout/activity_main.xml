@@ -15,12 +15,12 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:orientation="vertical"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical|center_horizontal">
 
         <Button
             android:id="@+id/findGameBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="500dp"
+            android:layout_height="100dp"
             android:text="@string/findGame"
             android:onClick="onClick"
 
@@ -29,8 +29,8 @@
             />
         <Button
             android:id="@+id/hostGameBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="500dp"
+            android:layout_height="100dp"
             android:text="@string/hostGame"
             android:onClick="onClick"
 
@@ -39,8 +39,8 @@
             />
         <Button
             android:id="@+id/settingsBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="500dp"
+            android:layout_height="100dp"
             android:text="@string/settings"
 
             android:layout_weight="0"
@@ -48,8 +48,8 @@
             />
         <Button
             android:id="@+id/closeBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="500dp"
+            android:layout_height="100dp"
             android:text="@string/close"
             android:layout_weight="0"
             android:layout_margin="20dp"

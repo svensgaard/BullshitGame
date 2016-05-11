@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        >
+        android:gravity="center_horizontal">
         <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
@@ -25,8 +25,8 @@
             android:text="Quit"
             android:id="@+id/button_quit"
             android:onClick="quitHandler"
-            android:layout_gravity="left|top"
-            android:gravity="center_vertical|left"/>
+            android:layout_gravity="left"
+            android:gravity="left"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -34,8 +34,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="YOUR TURN"
             android:id="@+id/textView_turn_label"
-            android:layout_gravity="center_vertical"
-            android:gravity="center"/>
+            android:gravity="center_vertical|center_horizontal"/>
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -44,8 +43,7 @@
             android:text="Roll!"
             android:onClick="rollHandler"
             android:id="@+id/button_roll"
-            android:layout_gravity="right"
-            />
+            android:gravity="right"/>
 
     </LinearLayout>
 
@@ -164,7 +162,7 @@
                 android:id="@+id/button_guess"
                 android:onClick="guessHandler"
                 android:layout_gravity="center_horizontal"
-                />
+                android:layout_marginTop="50dp"/>
         </LinearLayout>
 
         <LinearLayout
