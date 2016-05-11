@@ -206,6 +206,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void newRound() {
+        enableButtons();
         mGuess.setText("");
         hideOpponentDice();
 
@@ -221,8 +222,6 @@ public class GameActivity extends AppCompatActivity {
                     .show();
         if  (!myTurn) {
             disableButtons();
-            mShakeDetector.disable();
-
         }
     }
 
@@ -511,8 +510,11 @@ public class GameActivity extends AppCompatActivity {
 
                         if (result == 1) {
                             won();
+                            Toast.makeText(GameActivity.this, "Not connected", Toast.LENGTH_SHORT).show();
                         } else {
                             lost();
+                            Toast.makeText(GameActivity.this, "Not connected", Toast.LENGTH_SHORT).show();
+
                         }
                     }
 
