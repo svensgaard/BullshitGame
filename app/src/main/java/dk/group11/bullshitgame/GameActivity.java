@@ -510,10 +510,10 @@ public class GameActivity extends AppCompatActivity {
 
                         if (result == 1) {
                             won();
-                            Toast.makeText(GameActivity.this, "Not connected", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(GameActivity.this, "YOU WON", Toast.LENGTH_SHORT).show();
                         } else {
                             lost();
-                            Toast.makeText(GameActivity.this, "Not connected", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(GameActivity.this, "YOU LOST", Toast.LENGTH_SHORT).show();
 
                         }
                     }
