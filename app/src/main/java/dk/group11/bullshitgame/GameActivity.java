@@ -320,6 +320,8 @@ public class GameActivity extends AppCompatActivity {
     public void bullShitHandler(View view) {
         showOpponentDice();
 
+        sendMessage(Constants.SEND_BULLSHIT);
+
         checkBullshit();
     }
 
@@ -351,23 +353,23 @@ public class GameActivity extends AppCompatActivity {
 
     private void checkBullshit() {
         int amount_of_guessed_dice = 0;
-        String guessed_dice = spinner_guess_dice.getSelectedItem().toString();
 
+        // COUNTS AMOUNT OF GUESSED DIE
         for (ImageView i : playerDices) {
             String this_dice = i.getBackground().toString();
-            if (this_dice.contains(guessed_dice)) {
+            if (this_dice.contains(String.valueOf(currentGuessValue))) {
                 amount_of_guessed_dice++;
             }
         }
 
         for (ImageView i : opponentDices) {
             String this_dice = i.getBackground().toString();
-            if (this_dice.contains(guessed_dice)) {
+            if (this_dice.contains(String.valueOf(currentGuessValue))) {
                 amount_of_guessed_dice++;
             }
         }
 
-        if (Integer.parseInt(spinner_guess_amount.getSelectedItem().toString()) < amount_of_guessed_dice) {
+        if (currentGuessAmount < amount_of_guessed_dice) {
             new AlertDialog.Builder(this)
                     .setTitle("Round over")
                     .setMessage("You won!")
@@ -376,6 +378,7 @@ public class GameActivity extends AppCompatActivity {
                             if (playerDices.size() <= 0 || opponentDices.size() <= 0) {
                                 endGame();
                             }
+                            myTurn = false;
                             newRound();
                             player_score++;
                             mPlayer_score.setText(String.valueOf(player_score));
@@ -396,6 +399,7 @@ public class GameActivity extends AppCompatActivity {
                             if (playerDices.size() <= 0 || opponentDices.size() <= 0) {
                                 endGame();
                             }
+                            myTurn = true;
                             newRound();
                             remaining_dice--;
                             opponent_remaining_dice--;
@@ -489,6 +493,10 @@ public class GameActivity extends AppCompatActivity {
                         mGuess.setText(currentGuessAmount + "x of " + currentGuessValue);
                         myTurn = true;
                         enableButtons();
+                    }
+
+                    if(readMessage.contains(Constants.SEND_BULLSHIT)) {
+                        checkBullshit();
                     }
 
 
