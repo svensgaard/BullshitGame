@@ -34,6 +34,7 @@ public class ClientThread extends Thread {
 
         try {
             btSocket.connect();
+            write("Client connected");
         } catch (IOException e) {
 
             return;

@@ -114,7 +114,7 @@ public class GameActivity extends AppCompatActivity {
             discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
             startActivity(discoverableIntent);
             btController.startHostingServer();
-
+            Log.d("INFO","GOT PAST START HOSTING()");
         }
 
     }
