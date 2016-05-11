@@ -18,5 +18,6 @@ public interface Constants {
 
     //Send data IDs
     public static  final String SEND_ROLL = "ROLL,";
+    public static  final String SEND_GUESS = "GUESS,";
 
 }

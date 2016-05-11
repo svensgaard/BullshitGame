@@ -48,6 +48,8 @@ public class GameActivity extends AppCompatActivity {
     boolean shakeEnabled;
     boolean myTurn;
     Random rand;
+    int currentGuessAmount;
+    int currentGuessValue;
 
     Boolean dicesReceived = false;
 
@@ -411,7 +413,7 @@ public class GameActivity extends AppCompatActivity {
 
         final String guess = spinner_guess_amount.getSelectedItem().toString() + "x of " +spinner_guess_dice.getSelectedItem().toString()+"'s";
 
-
+        sendMessage(Constants.SEND_GUESS + spinner_guess_amount.getSelectedItem().toString() + spinner_guess_dice.getSelectedItem().toString());
         new AlertDialog.Builder(this)
                 .setTitle("Your guess")
                 .setMessage(guess)
@@ -419,6 +421,8 @@ public class GameActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         mGuess.setText(guess);
                         mTurn_label.setText("Waiting...");
+                        disableButtons();
+                        myTurn = false;
                     }
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
@@ -477,6 +481,16 @@ public class GameActivity extends AppCompatActivity {
                             disableButtons();
                         }
                     }
+                    if(readMessage.contains(Constants.SEND_GUESS)) {
+                        String[] recieved = readMessage.split(",");
+                        String roll = recieved[1];
+                        currentGuessAmount = Integer.parseInt(String.valueOf(roll.charAt(0)));
+                        currentGuessValue = Integer.parseInt(String.valueOf(roll.charAt(1)));
+                        mGuess.setText(currentGuessAmount + "x of " + currentGuessValue);
+                        myTurn = true;
+                        enableButtons();
+                    }
+
 
                     break;
                 case Constants.MESSAGE_DEVICE_NAME:
@@ -488,6 +502,11 @@ public class GameActivity extends AppCompatActivity {
             }
         }
     };
+
+    private void enableButtons() {
+        mButton_Bullshit.setEnabled(true);
+        mButton_Guess.setEnabled(true);
+    }
 
     public final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
