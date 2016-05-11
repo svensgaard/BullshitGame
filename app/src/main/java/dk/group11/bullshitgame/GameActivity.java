@@ -370,46 +370,95 @@ public class GameActivity extends AppCompatActivity {
         }
 
         if (currentGuessAmount < amount_of_guessed_dice) {
-            new AlertDialog.Builder(this)
-                    .setTitle("Round over")
-                    .setMessage("You won!")
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            if (playerDices.size() <= 0 || opponentDices.size() <= 0) {
-                                endGame();
+
+            if (myTurn) {
+                new AlertDialog.Builder(this)
+                        .setTitle("Round over")
+                        .setMessage("You lost!")
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (playerDices.size() <= 0 || opponentDices.size() <= 0) {
+                                    endGame();
+                                }
+                                myTurn = true;
+                                newRound();
+                                remaining_dice--;
+                                opponent_remaining_dice--;
+                                opponentDices.get(opponent_remaining_dice - 1).setVisibility(View.GONE);
+                                mOpponent_score.setText(String.valueOf(opponent_score++));
+                                mRemaining_dice.setText(String.valueOf(remaining_dice));
                             }
-                            myTurn = false;
-                            newRound();
-                            player_score++;
-                            mPlayer_score.setText(String.valueOf(player_score));
-                            player_remaining_dice--;
-                            remaining_dice--;
-                            playerDices.get(player_remaining_dice-1).setVisibility(View.GONE);
-                            mRemaining_dice.setText(String.valueOf(remaining_dice));
-                        }
-                    })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            } else {
+                new AlertDialog.Builder(this)
+                        .setTitle("Round over")
+                        .setMessage("You won!")
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (playerDices.size() <= 0 || opponentDices.size() <= 0) {
+                                    endGame();
+                                }
+                                myTurn = false;
+                                newRound();
+                                player_score++;
+                                mPlayer_score.setText(String.valueOf(player_score));
+                                player_remaining_dice--;
+                                remaining_dice--;
+                                playerDices.get(player_remaining_dice-1).setVisibility(View.GONE);
+                                mRemaining_dice.setText(String.valueOf(remaining_dice));
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
         } else {
-            new AlertDialog.Builder(this)
-                    .setTitle("Round over")
-                    .setMessage("You lost!")
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            if (playerDices.size() <= 0 || opponentDices.size() <= 0) {
-                                endGame();
+            if (myTurn) {
+                new AlertDialog.Builder(this)
+                        .setTitle("Round over")
+                        .setMessage("You won!")
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (playerDices.size() <= 0 || opponentDices.size() <= 0) {
+                                    endGame();
+                                }
+                                myTurn = false;
+                                newRound();
+                                player_score++;
+                                mPlayer_score.setText(String.valueOf(player_score));
+                                player_remaining_dice--;
+                                remaining_dice--;
+                                playerDices.get(player_remaining_dice-1).setVisibility(View.GONE);
+                                mRemaining_dice.setText(String.valueOf(remaining_dice));
                             }
-                            myTurn = true;
-                            newRound();
-                            remaining_dice--;
-                            opponent_remaining_dice--;
-                            opponentDices.get(opponent_remaining_dice - 1).setVisibility(View.GONE);
-                            mOpponent_score.setText(String.valueOf(opponent_score++));
-                            mRemaining_dice.setText(String.valueOf(remaining_dice));
-                        }
-                    })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+
+            } else {
+
+                new AlertDialog.Builder(this)
+                        .setTitle("Round over")
+                        .setMessage("You lost!")
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (playerDices.size() <= 0 || opponentDices.size() <= 0) {
+                                    endGame();
+                                }
+                                myTurn = true;
+                                newRound();
+                                remaining_dice--;
+                                opponent_remaining_dice--;
+                                opponentDices.get(opponent_remaining_dice - 1).setVisibility(View.GONE);
+                                mOpponent_score.setText(String.valueOf(opponent_score++));
+                                mRemaining_dice.setText(String.valueOf(remaining_dice));
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
+
         }
     }
 
