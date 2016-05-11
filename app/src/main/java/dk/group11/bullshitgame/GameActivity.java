@@ -49,6 +49,7 @@ public class GameActivity extends AppCompatActivity {
     boolean myTurn;
     Random rand;
 
+    Boolean dicesReceived = false;
 
 
     BluetoothService btService;
@@ -203,11 +204,9 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void newRound() {
-        mButton_Bullshit.setEnabled(false);
-        mButton_Guess.setEnabled(false);
         mGuess.setText("");
         hideOpponentDice();
-        if  (myTurn) {
+
             new AlertDialog.Builder(this)
                     .setTitle("New round")
                     .setMessage("Click ok, and start shaking!")
@@ -218,7 +217,11 @@ public class GameActivity extends AppCompatActivity {
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
-        } else
+        if  (!myTurn) {
+            disableButtons();
+            mShakeDetector.disable();
+
+        }
     }
 
     public void roll() {
@@ -234,9 +237,18 @@ public class GameActivity extends AppCompatActivity {
         }
 
         shakeEnabled = false;
+        sendMessage(Constants.SEND_ROLL + roll);
+        if(dicesReceived) {
+            if(myTurn) {
+                mTurn_label.setText("Make a guess!");
+            } else {
+                mTurn_label.setText("Waiting for opponent");
+                disableButtons();
+            }
+        } else {
+            mTurn_label.setText("Waiting for opponent to roll");
+        }
 
-            mTurn_label.setText("WAITING...");
-            disableButtons();
 
     }
 
@@ -424,10 +436,7 @@ public class GameActivity extends AppCompatActivity {
                         case BluetoothService.STATE_CONNECTED:
                             Log.d("BT_STATE", "CONNECTED");
                             intialize();
-                            if(!myTurn) {
-                                disableButtons();
-                                mShakeDetector.disable();
-                            }
+
                             break;
                         case BluetoothService.STATE_CONNECTING:
                             Log.d("BT_STATE", "connectiong");
@@ -443,6 +452,27 @@ public class GameActivity extends AppCompatActivity {
 
                     break;
                 case Constants.MESSAGE_READ:
+                    byte[] readBuf = (byte[]) msg.obj;
+                    // construct a string from the valid bytes in the buffer
+                    String readMessage = new String(readBuf, 0, msg.arg1);
+                    Log.d("Recevied",readMessage);
+                    if(readMessage.contains(Constants.SEND_ROLL)) {
+                            String[] recieved = readMessage.split(",");
+                            String roll = recieved[1];
+
+                            // SETS OPPONENT DICES
+                            for (int i = 0; i < roll.length();i++) {
+                            opponentDices.get(i).setBackground(dice_drawables.get(roll.charAt(i)));
+                            }
+                        dicesReceived = true;
+
+                        if(myTurn) {
+                            mTurn_label.setText("Make a guess!");
+                        } else {
+                            mTurn_label.setText("Waiting for opponent");
+                            disableButtons();
+                        }
+                    }
 
                     break;
                 case Constants.MESSAGE_DEVICE_NAME:

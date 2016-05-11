@@ -16,4 +16,7 @@ public interface Constants {
     public static final String DEVICE_NAME = "device_name";
     public static final String TOAST = "toast";
 
+    //Send data IDs
+    public static  final String SEND_ROLL = "ROLL,";
+
 }
