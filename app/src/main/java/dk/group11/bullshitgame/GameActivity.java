@@ -2,6 +2,7 @@ package dk.group11.bullshitgame;
 
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,6 +11,9 @@ import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,12 +25,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
 import Bluetooth.BluetoothController;
+import BluetoothV2.BluetoothService;
+import BluetoothV2.Constants;
 import ShakeDetector.ShakeDetector;
 
 public class GameActivity extends AppCompatActivity {
@@ -47,6 +54,9 @@ public class GameActivity extends AppCompatActivity {
 
 
     private BluetoothController btController;
+
+    BluetoothService btService;
+    BluetoothAdapter btAdapter;
 
     public static final String EXTRA_CONNECTION_TYPE = "connection type";
     public static final int BT_DEVICE_REQUEST = 1;
@@ -69,8 +79,8 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-
-
+        btAdapter = BluetoothAdapter.getDefaultAdapter();
+        btService = new BluetoothService(this, mHandler);
         btController = new BluetoothController(this);
         mShakeDetector = new ShakeDetector(GameActivity.this);
 
@@ -92,22 +102,11 @@ public class GameActivity extends AppCompatActivity {
         connectionType = i.getStringExtra(EXTRA_CONNECTION_TYPE);
 
         Log.d("ConnectionType: ", connectionType);
-
+        btService.start();
         if (connectionType.equals("client")) {
             Intent intent = new Intent(this, BT_Device.class);
             startActivityForResult(intent, BT_DEVICE_REQUEST);
             myTurn = true;
-        }
-
-        else if (connectionType.equals("server")) {
-
-            myTurn = false;
-            Intent discoverableIntent = new
-                    Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
-            startActivity(discoverableIntent);
-            btController.startHostingServer();
-            Log.d("INFO","GOT PAST START HOSTING()");
         }
 
     }
@@ -119,14 +118,8 @@ public class GameActivity extends AppCompatActivity {
         }
         else if (requestCode == BT_DEVICE_REQUEST) {
             String MACaddress = data.getExtras().getString(BT_Device.EXTRA_DEVICE_ADDRESS);
-            try {
-                if (btController.connectToServer(MACaddress)) {
-                    // CONNECTED
-                    intialize();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            BluetoothDevice device = btAdapter.getRemoteDevice(MACaddress);
+            btService.connect(device, false);
         }
     }
 
@@ -409,6 +402,41 @@ public class GameActivity extends AppCompatActivity {
 
 
     }
+    private final Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+
+            switch (msg.what) {
+                case Constants.MESSAGE_STATE_CHANGE:
+                    switch (msg.arg1) {
+                        case BluetoothService.STATE_CONNECTED:
+                            Log.d("BT_STATE", "CONNECTED");
+                            break;
+                        case BluetoothService.STATE_CONNECTING:
+                            Log.d("BT_STATE", "connectiong");
+                            break;
+                        case BluetoothService.STATE_LISTEN:
+                        case BluetoothService.STATE_NONE:
+                            Log.d("BT_STATE","NOT CONNECTED");
+                            break;
+                    }
+
+                    break;
+                case Constants.MESSAGE_WRITE:
+
+                    break;
+                case Constants.MESSAGE_READ:
+
+                    break;
+                case Constants.MESSAGE_DEVICE_NAME:
+
+                    break;
+                case Constants.MESSAGE_TOAST:
+
+                    break;
+            }
+        }
+    };
 
     public final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
@@ -495,6 +523,18 @@ public class GameActivity extends AppCompatActivity {
         mShakeDetector.unregister();
         this.unregisterReceiver(mReceiver);
         super.onPause();
+    }
+    private void sendMessage(String message) {
+        // Check that we're actually connected before trying anything
+        if (btService.getState() != btService.STATE_CONNECTED) {
+            Toast.makeText(this, "Not connected", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Check that there's actually something to send
+        if (message.length() > 0) {
+            btService.write(message.getBytes());
+        }
     }
 
 }

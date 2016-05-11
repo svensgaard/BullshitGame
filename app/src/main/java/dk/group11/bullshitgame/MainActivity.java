@@ -38,7 +38,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             intent.putExtra(GameActivity.EXTRA_CONNECTION_TYPE, "client");
             startActivity(intent);
         } else if(v.getId() == R.id.settingsBtn) {
-            //TODO start settings
+            //Start discovarable
+            Intent discoverableIntent = new
+                    Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+            startActivity(discoverableIntent);
         } else if(v.getId() == R.id.closeBtn) {
             //TODO close
         }
