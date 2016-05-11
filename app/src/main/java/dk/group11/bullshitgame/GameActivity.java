@@ -418,6 +418,8 @@ public class GameActivity extends AppCompatActivity {
             if (BluetoothController.BT_SEND_DATA_INTENT.equals(action)) {
                 String data = intent.getStringExtra(BluetoothController.BT_SEND_DATA_INTENT_EXTRA_DATA);
 
+                Log.d("DATA RECIEVED: ", data);
+
                 if (data.contains(btController.EXTRA_ROLL)) {
 
 

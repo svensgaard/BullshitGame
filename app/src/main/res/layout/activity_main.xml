@@ -12,9 +12,10 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="center_vertical">
 
         <Button
             android:id="@+id/findGameBtn"
@@ -23,6 +24,8 @@
             android:text="@string/findGame"
             android:onClick="onClick"
 
+            android:layout_weight="0"
+            android:layout_margin="20dp"
             />
         <Button
             android:id="@+id/hostGameBtn"
@@ -31,6 +34,8 @@
             android:text="@string/hostGame"
             android:onClick="onClick"
 
+            android:layout_weight="0"
+            android:layout_margin="20dp"
             />
         <Button
             android:id="@+id/settingsBtn"
@@ -38,12 +43,16 @@
             android:layout_height="wrap_content"
             android:text="@string/settings"
 
+            android:layout_weight="0"
+            android:layout_margin="20dp"
             />
         <Button
             android:id="@+id/closeBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/close"
+            android:layout_weight="0"
+            android:layout_margin="20dp"
             />
 
     </LinearLayout>
