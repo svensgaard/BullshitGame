@@ -459,10 +459,13 @@ public class GameActivity extends AppCompatActivity {
                     if(readMessage.contains(Constants.SEND_ROLL)) {
                             String[] recieved = readMessage.split(",");
                             String roll = recieved[1];
+                        Log.d("ROLL: ", roll);
 
                             // SETS OPPONENT DICES
                             for (int i = 0; i < roll.length();i++) {
-                            opponentDices.get(i).setBackground(dice_drawables.get(roll.charAt(i)));
+                                Log.d("SIZE OPPONENT:", String.valueOf(opponentDices.size()) );
+                                Log.d("SIZE DRAWABALES:", String.valueOf(dice_drawables.size()));
+                            opponentDices.get(i).setBackground(dice_drawables.get(Integer.parseInt(String.valueOf(roll.charAt(i)))));
                             }
                         dicesReceived = true;
 
