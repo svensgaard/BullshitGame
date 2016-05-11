@@ -84,7 +84,7 @@ public class ClientThread extends Thread {
 
     }
 
-    public void write(String s) throws IOException {
+    public synchronized void write(String s) throws IOException {
         BufferedWriter bufferedwriter = new BufferedWriter(new OutputStreamWriter(outputStream));
         bufferedwriter.write(s);
         bufferedwriter.flush();

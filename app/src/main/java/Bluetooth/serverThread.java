@@ -84,7 +84,7 @@ public class ServerThread extends Thread{
             try {
                 Log.d("ServerInfo", "Waiting for input");
                 input = bufferedreader.readLine(); //Blocking call
-
+                Log.d("SERVER RECEIVED", input);
                 //TODO something when player connects... Start game?
                 // broadcast the received data
                 Intent i = new Intent(BluetoothController.BT_SEND_DATA_INTENT);
@@ -113,7 +113,7 @@ public class ServerThread extends Thread{
         runThread = false;
     }
 
-    public void write(String string) throws IOException {
+    public synchronized void write(String string) throws IOException {
         BufferedWriter bufferedwriter = new BufferedWriter(new OutputStreamWriter(outputstream));
         bufferedwriter.write(string);
         bufferedwriter.flush();
