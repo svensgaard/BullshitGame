@@ -158,8 +158,6 @@ public class BT_Device extends Activity {
         }
         newDevicesListView.setOnItemClickListener(null);
         pairedListView.setOnItemClickListener(null);
-        // Unregister broadcast listener
-        this.unregisterReceiver(mReceiver);
     }
 
     @Override

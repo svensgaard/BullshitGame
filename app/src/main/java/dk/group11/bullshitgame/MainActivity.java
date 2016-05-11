@@ -6,23 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import Bluetooth.BluetoothController;
-
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
-    BluetoothController bluetoothController = new BluetoothController(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-        if(bluetoothController.startBluetooth()) {
-            int REQUEST_ENABLE_BT = 1;
-            Intent bluetooth_intent = bluetoothController.checkBluetoothEnable();
-            if (bluetooth_intent != null) {
-                startActivityForResult(bluetooth_intent, REQUEST_ENABLE_BT);
-            }
-        }
 
 
 

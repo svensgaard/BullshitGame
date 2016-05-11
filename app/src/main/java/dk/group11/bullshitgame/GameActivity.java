@@ -30,8 +30,6 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
-
-import Bluetooth.BluetoothController;
 import BluetoothV2.BluetoothService;
 import BluetoothV2.Constants;
 import ShakeDetector.ShakeDetector;
@@ -52,8 +50,6 @@ public class GameActivity extends AppCompatActivity {
     Random rand;
 
 
-
-    private BluetoothController btController;
 
     BluetoothService btService;
     BluetoothAdapter btAdapter;
@@ -211,16 +207,18 @@ public class GameActivity extends AppCompatActivity {
         mButton_Guess.setEnabled(false);
         mGuess.setText("");
         hideOpponentDice();
-        new AlertDialog.Builder(this)
-                .setTitle("New round")
-                .setMessage("Click ok, and start shaking!")
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        shakeEnabled = true;
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
+        if  (myTurn) {
+            new AlertDialog.Builder(this)
+                    .setTitle("New round")
+                    .setMessage("Click ok, and start shaking!")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            shakeEnabled = true;
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        } else
     }
 
     public void roll() {
@@ -307,16 +305,34 @@ public class GameActivity extends AppCompatActivity {
 
     public void bullShitHandler(View view) {
         showOpponentDice();
-        try {
-            btController.sendData(btController.EXTRA_BULLSHIT);
-            myTurn = false;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         checkBullshit();
+    }
 
-
+    public void endGame() {
+        if (playerDices.size() <= 0) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Game over")
+                    .setMessage("You won!")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        } else {
+            new AlertDialog.Builder(this)
+                    .setTitle("Game over")
+                    .setMessage("You lost!")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
     }
 
     private void checkBullshit() {
@@ -343,9 +359,12 @@ public class GameActivity extends AppCompatActivity {
                     .setMessage("You won!")
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
+                            if (playerDices.size() <= 0 || opponentDices.size() <= 0) {
+                                endGame();
+                            }
+                            newRound();
                             player_score++;
                             mPlayer_score.setText(String.valueOf(player_score));
-                            newRound();
                             player_remaining_dice--;
                             remaining_dice--;
                             playerDices.get(player_remaining_dice-1).setVisibility(View.GONE);
@@ -360,10 +379,13 @@ public class GameActivity extends AppCompatActivity {
                     .setMessage("You lost!")
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
+                            if (playerDices.size() <= 0 || opponentDices.size() <= 0) {
+                                endGame();
+                            }
                             newRound();
                             remaining_dice--;
                             opponent_remaining_dice--;
-                            opponentDices.get(opponent_remaining_dice-1).setVisibility(View.GONE);
+                            opponentDices.get(opponent_remaining_dice - 1).setVisibility(View.GONE);
                             mOpponent_score.setText(String.valueOf(opponent_score++));
                             mRemaining_dice.setText(String.valueOf(remaining_dice));
                         }
@@ -377,12 +399,6 @@ public class GameActivity extends AppCompatActivity {
 
         final String guess = spinner_guess_amount.getSelectedItem().toString() + "x of " +spinner_guess_dice.getSelectedItem().toString()+"'s";
 
-        String guess_extra = btController.EXTRA_GUESS + spinner_guess_amount.getSelectedItem().toString()+ spinner_guess_dice.getSelectedItem().toString();
-        try {
-            btController.sendData(guess_extra);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         new AlertDialog.Builder(this)
                 .setTitle("Your guess")
@@ -444,66 +460,66 @@ public class GameActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
 
-            if (BluetoothController.BT_SEND_DATA_INTENT.equals(action)) {
-                String data = intent.getStringExtra(BluetoothController.BT_SEND_DATA_INTENT_EXTRA_DATA);
-
-                if (data.contains(btController.EXTRA_ROLL)) {
-
-
-                    String[] recieved = data.split(",");
-                    String roll = recieved[1];
-
-                    // SETS OPPONENT DICES
-                    for (int i = 0; i < roll.length();i++) {
-                        opponentDices.get(i).setBackground(dice_drawables.get(roll.charAt(i)));
-                    }
-
-                    if (myTurn) {
-                        new AlertDialog.Builder(context)
-                                .setMessage("Make a guess!")
-                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        mButton_Bullshit.setEnabled(true);
-                                        mButton_Guess.setEnabled(true);
-                                        populateSpinner();
-                                    }
-                                })
-                                .setIcon(android.R.drawable.ic_dialog_alert)
-                                .show();
-                    }
-                }
-
-                if (data.contains(btController.EXTRA_GUESS)) {
-
-
-                    String[] recieved = data.split(",");
-                    String guess = recieved[1];
-                    myTurn = true;
-
-                    new AlertDialog.Builder(context)
-                            .setTitle("Opponent guess")
-                            .setMessage(guess.charAt(0)+"x of "+guess.charAt(1)+"'s")
-                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    mButton_Bullshit.setEnabled(true);
-                                    mButton_Guess.setEnabled(true);
-                                    populateSpinner();
-                                }
-                            })
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .show();
-                }
-
-                if (data.contains(btController.EXTRA_BULLSHIT)) {
-                    checkBullshit();
-                    myTurn = true;
-                }
-
-            } else if (btController.BT_CLIENT_CONNECTED.equals(action)) {
-                myTurn = false;
-                intialize();
-                newRound();
-            }
+//            if (BluetoothController.BT_SEND_DATA_INTENT.equals(action)) {
+//                String data = intent.getStringExtra(BluetoothController.BT_SEND_DATA_INTENT_EXTRA_DATA);
+//
+//                if (data.contains(btController.EXTRA_ROLL)) {
+//
+//
+//                    String[] recieved = data.split(",");
+//                    String roll = recieved[1];
+//
+//                    // SETS OPPONENT DICES
+//                    for (int i = 0; i < roll.length();i++) {
+//                        opponentDices.get(i).setBackground(dice_drawables.get(roll.charAt(i)));
+//                    }
+//
+//                    if (myTurn) {
+//                        new AlertDialog.Builder(context)
+//                                .setMessage("Make a guess!")
+//                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+//                                    public void onClick(DialogInterface dialog, int which) {
+//                                        mButton_Bullshit.setEnabled(true);
+//                                        mButton_Guess.setEnabled(true);
+//                                        populateSpinner();
+//                                    }
+//                                })
+//                                .setIcon(android.R.drawable.ic_dialog_alert)
+//                                .show();
+//                    }
+//                }
+//
+//                if (data.contains(btController.EXTRA_GUESS)) {
+//
+//
+//                    String[] recieved = data.split(",");
+//                    String guess = recieved[1];
+//                    myTurn = true;
+//
+//                    new AlertDialog.Builder(context)
+//                            .setTitle("Opponent guess")
+//                            .setMessage(guess.charAt(0)+"x of "+guess.charAt(1)+"'s")
+//                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    mButton_Bullshit.setEnabled(true);
+//                                    mButton_Guess.setEnabled(true);
+//                                    populateSpinner();
+//                                }
+//                            })
+//                            .setIcon(android.R.drawable.ic_dialog_alert)
+//                            .show();
+//                }
+//
+//                if (data.contains(btController.EXTRA_BULLSHIT)) {
+//                    checkBullshit();
+//                    myTurn = true;
+//                }
+//
+//            } else if (btController.BT_CLIENT_CONNECTED.equals(action)) {
+//                myTurn = false;
+//                intialize();
+//                newRound();
+//            }
 
         }
     };
@@ -513,8 +529,6 @@ public class GameActivity extends AppCompatActivity {
         super.onResume();
 
         mShakeDetector.register();
-        IntentFilter filter = new IntentFilter(btController.BT_SEND_DATA_INTENT);
-        this.registerReceiver(mReceiver, filter);
 
 
     }
@@ -522,7 +536,6 @@ public class GameActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         mShakeDetector.unregister();
-        this.unregisterReceiver(mReceiver);
         super.onPause();
     }
     private void sendMessage(String message) {
