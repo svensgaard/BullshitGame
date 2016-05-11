@@ -28,6 +28,8 @@ public class BluetoothController {
     public static String BT_SEND_DATA_INTENT = "dk.group11.bullshitgame.INTENT";
     public static String BT_SEND_DATA_INTENT_EXTRA_DATA = "dk.group11.bullshitgame.DATA";
 
+    public static String BT_CLIENT_CONNECTED = "dk.group11.bullshitgame.CLIENT_CONNECTED";
+
     public BluetoothController(Context context) {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 

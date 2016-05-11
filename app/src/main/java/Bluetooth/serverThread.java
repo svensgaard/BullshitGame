@@ -59,7 +59,9 @@ public class ServerThread extends Thread{
             Log.d("ServerInfo", "Waiting for connection");
             //Blocking
             btsocket = btServer.accept();
-            Log.d("ServerInfo", "Connection accepted");
+            // broadcast the received data
+            Intent i = new Intent(BluetoothController.BT_CLIENT_CONNECTED);
+            context.sendBroadcast(i);
         } catch (IOException e) {
             e.printStackTrace();
             return;

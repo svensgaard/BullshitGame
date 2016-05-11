@@ -107,6 +107,7 @@ public class GameActivity extends AppCompatActivity {
         }
 
         else if (connectionType.equals("server")) {
+
             myTurn = false;
             Intent discoverableIntent = new
                     Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
@@ -475,6 +476,11 @@ public class GameActivity extends AppCompatActivity {
                     checkBullshit();
                     myTurn = true;
                 }
+
+            } else if (btController.BT_CLIENT_CONNECTED.equals(action)) {
+                myTurn = false;
+                intialize();
+                newRound();
             }
 
         }
