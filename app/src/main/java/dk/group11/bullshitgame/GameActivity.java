@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
@@ -43,6 +44,8 @@ public class GameActivity extends AppCompatActivity {
     boolean myTurn;
     Random rand;
 
+
+
     private BluetoothController btController;
 
     public static final String EXTRA_CONNECTION_TYPE = "connection type";
@@ -65,6 +68,15 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        IntentFilter filter = new IntentFilter(btController.EXTRA_ROLL);
+        this.registerReceiver(mReceiver, filter);
+
+        filter = new IntentFilter(btController.EXTRA_BULLSHIT);
+        this.registerReceiver(mReceiver, filter);
+
+        filter = new IntentFilter(btController.EXTRA_GUESS);
+        this.registerReceiver(mReceiver, filter);
 
         btController = new BluetoothController(this);
         mShakeDetector = new ShakeDetector(GameActivity.this);
@@ -472,11 +484,13 @@ public class GameActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         mShakeDetector.register();
+
     }
 
     @Override
     public void onPause() {
         mShakeDetector.unregister();
+        this.unregisterReceiver(mReceiver);
         super.onPause();
     }
 
