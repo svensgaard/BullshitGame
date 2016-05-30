@@ -58,6 +58,16 @@
             android:layout_margin="20dp"
             />
         <Button
+            android:id="@+id/notifyBtn"
+            android:layout_width="500dp"
+            android:layout_height="100dp"
+            android:text="@string/notify"
+            android:onClick="onClick"
+
+            android:layout_weight="0"
+            android:layout_margin="20dp"
+            />
+        <Button
             android:id="@+id/closeBtn"
             android:layout_width="500dp"
             android:layout_height="100dp"

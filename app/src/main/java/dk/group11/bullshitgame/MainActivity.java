@@ -7,11 +7,14 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import java.security.PrivateKey;
 
 public class MainActivity extends AppCompatActivity {
     int BT_ENABLE = 1;
+    private final int NOTIFY_TIME = 30000; //30 seconds
+    private final String NOTIFY_TOAST = "You will be notified in " + NOTIFY_TIME+ " milliseconds";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +63,10 @@ public class MainActivity extends AppCompatActivity {
         } else if(v.getId() == R.id.historyBtn) {
             Intent intent = new Intent(this, DisplayHistory.class);
             startActivity(intent);
+        } else if(v.getId() == R.id.notifyBtn) {
+            NotifyService.startActionCount(this, NOTIFY_TIME);
+            Toast.makeText(this, NOTIFY_TOAST,
+                    Toast.LENGTH_LONG).show();
         }
     }
     @Override
