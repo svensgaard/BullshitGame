@@ -48,12 +48,23 @@
             android:layout_margin="20dp"
             />
         <Button
+            android:id="@+id/historyBtn"
+            android:layout_width="500dp"
+            android:layout_height="100dp"
+            android:text="@string/history"
+            android:onClick="onClick"
+
+            android:layout_weight="0"
+            android:layout_margin="20dp"
+            />
+        <Button
             android:id="@+id/closeBtn"
             android:layout_width="500dp"
             android:layout_height="100dp"
             android:text="@string/close"
             android:layout_weight="0"
             android:layout_margin="20dp"
+            android:onClick="onClick"
             />
 
     </LinearLayout>
